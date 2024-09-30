@@ -1,0 +1,15 @@
+!Color theme for i3
+
+
+*dkdk_green_0: #11221c
+*dkdk_green_1: #2a4235
+
+*dk___green_0: #294641
+*dk___green_1: #386260
+*lh___green_0: #547a6d
+
+*signal_crit: #f63a3a
+*signal_warn: #e1ab8f
+*signal_mild: #decca8
+*signal_defa: #ffffff
+

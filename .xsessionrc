@@ -1,0 +1,7 @@
+# no need to add sh as it is sourced, not executed
+# created by me to include environment variables of ~/.profile
+# see https://wiki.debian.org/EnvironmentVariables#Quick_guide
+
+if [ -f ~/.profile ]; then
+  . ~/.profile
+fi

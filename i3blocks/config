@@ -1,0 +1,129 @@
+# GLOBAL PROPERTIES
+#
+# The top properties below are applied to every block, but can be overridden.
+# Each block command defaults to the script name to avoid boilerplate.
+command=$SCRIPT_DIR/$BLOCK_NAME
+separator_block_width=15
+markup=pango
+
+# Layout and key indicators
+#
+#
+[mykeyboardlayout]
+signal=14
+interval=never
+separator=false
+
+[keyindicator]
+command=$SCRIPT_DIR/keyindicator -c "$lh___green_0" --hide -t ""
+instance=CAPS
+markup=pango
+signal=11
+interval=once
+separator=false
+
+[keyindicator]
+command=$SCRIPT_DIR/keyindicator -c "$lh___green_0" --hide -t ""
+instance=NUM
+markup=pango
+signal=12
+interval=once
+separator=false
+
+# Other indicators
+#
+# 'myupdate' appears if there are packages to be updated.
+# 'myhomeserver' is a button shortcut to open an interface for the homeserver.
+[myupdate]
+signal=13
+interval=once
+separator=false
+
+[myhomeserver]
+full_text=<span> </span>
+interval=never
+separator=false
+
+# Volume indicator
+#
+# The first parameter sets the step (and units to display)
+# The second parameter overrides the mixer selection
+# See the script for details.
+
+[volume-pulseaudio]
+command=$SCRIPT_DIR/volume-pulseaudio -t 30 -T 50
+signal=10
+interval=once
+separator=false
+
+
+# HARDWARE STATS INDICATORS
+
+# Temperature of CPU
+#
+# Displays temperature of CPU as recorded by 'acpi' command
+[mytemp]
+interval=30
+separator=false
+
+# Memory usage
+#
+# The type defaults to "mem" if the instance is not specified.
+[memory]
+label=
+interval=30
+separator=false
+
+# CPU usage
+#
+# The script may be called with -w and -c switches to specify thresholds,
+# see the script for details.
+[cpu_usage]
+label=
+interval=30
+separator=false
+
+# Disk usage
+#
+# The directory defaults to $HOME if the instance is not specified.
+# The script may be called with a optional argument to set the alert
+# (defaults to 10 for 10%).
+[mydisk]
+command=$SCRIPT_DIR/mydisk /home
+label=
+interval=1800
+separator=false
+
+# Network interface monitoring
+#
+# If the instance is not specified, use the interface used for default route.
+# The address can be forced to IPv4 or IPv6 with -4 or -6 switches.
+
+[mywifiname]
+instance=wlp3s0
+label= 
+interval=30
+separator=false
+
+# Battery indicator
+#
+# The battery instance defaults to 0.
+[battery2]
+interval=300
+separator=false
+
+# Date Time
+#
+#
+[time]
+command=date '+%d/%m/%y %H:%M'
+interval=10
+separator=false
+
+# Shutdown menu
+#
+# Simple button shortcut for the rofi-shutdown menu
+[shutdown_menu]
+full_text=<span size="medium">   </span>
+interval=never
+separator=false

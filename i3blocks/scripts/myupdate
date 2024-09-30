@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#
+# Simple script to display the number of packages that can be updated.
+# Copyright (C) 2024 Ludovico Deponte <ludovico.deponte@proton.me>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+UPGRADABLE=$(($(apt list --upgradable | wc -l) -1))
+
+if [[ $UPGRADABLE -ge 1 ]]; then
+    echo " $UPGRADABLE"
+fi
+
+case $BLOCK_BUTTON in
+  1) setsid -f $TERMINAL sudo apt-get update && apt-get upgrade && sudo apt-get dist-upgrade && pkill -SIGRTMIN+13 i3blocks
+esac

@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#
+# Simple script to show the current WiFi SSID, colors the name based on signal quality.
+# Quality is based on dBm received, it is not the Signal to Noise Ratio (SNR) reported
+# with '/sbin/iwlist scan' 
+# Pass the interface as instance=INTERFACE in the block definition (in i3blocks/config)
+# Modified and adapted from the original at https://github.com/vivien/i3blocks
+# Copyright (C) 2024 Ludovico Deponte <ludovico.deponte@proton.me>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+#------------------------------------------------------------------------
+if [ -z "$INTERFACE" ] ; then
+    INTERFACE="${BLOCK_INSTANCE:-wlan0}"
+fi
+#------------------------------------------------------------------------
+# As per #36 -- It is transparent: e.g. if the machine has no battery or wireless
+# connection (think desktop), the corresponding block should not be displayed.
+[[ ! -d /sys/class/net/${INTERFACE}/wireless ]] && exit
+
+# If the wifi interface exists but no connection is active, "down" shall be displayed.
+if [[ "$(cat /sys/class/net/$INTERFACE/operstate)" = 'down' ]]; then
+    echo "down"
+    echo "down"
+    echo $signal_crit
+    exit
+fi
+
+#------------------------------------------------------------------------
+
+QUALITY=$(/sbin/iw dev ${INTERFACE} link | grep 'dBm$'| grep -Eoe '-[0-9]{2}' |awk '{print  ($1 > -50 ? 100 :($1 < -100 ? 0 : ($1+100)*2))}')
+
+# full and short text
+/sbin/iwgetid | awk '{print $1 " "  substr( $2,8,length($2)-8)}' | { read iface ssid ; echo $ssid; echo $ssid; }
+
+# color
+if [[ $QUALITY -ge 80 ]]; then
+    echo $signal_defa
+elif [[ $QUALITY -ge 60 ]]; then
+    echo $signal_mild
+elif [[ $QUALITY -ge 40 ]]; then
+    echo $signal_warn
+else
+    echo $signal_crit
+fi
+
+case $BLOCK_BUTTON in
+  1) setsid -f $TERMINAL /sbin/wpa_cli
+esac

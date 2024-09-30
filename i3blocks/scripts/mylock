@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# Modified and adapted from the original at https://github.com/Raymo111/i3lock-color/blob/master/examples/lock.sh
+# Copyright (C) 2024 Ludovico Deponte <ludovico.deponte@proton.me>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+B='#00000000' # blank
+C='#ffffff22' # clear ish
+D="${dkdk_green_0}"
+T=$signal_mild # text
+W=$signal_crit # wrong
+V=$signal_warn # verifying
+
+/usr/bin/i3lock \
+--insidever-color=$C \
+--ringver-color=$V   \
+\
+--insidewrong-color=$C \
+--ringwrong-color=$W    \
+\
+--inside-color=$C    \
+--ring-color=$D      \
+--line-color=$B      \
+--separator-color=$B \
+\
+--verif-color=$V  \
+--wrong-color=$W  \
+--time-color=$D   \
+--date-color=$D   \
+--layout-color=$D \
+--keyhl-color=$V  \
+--bshl-color=$V   \
+\
+--screen 1            \
+--blur 7              \
+--clock               \
+--indicator           \
+--time-str="%H:%M:%S"  \
+--date-str="%A, %m %Y" \
+--radius 150	      \
+--ring-width 15.0     \
+--verif-text="authenticating" \
+--wrong-text="nope"    \
+--noinput-text="empty" \
+--time-font="Hack Nerd Font"   \
+--time-size="32"               \
+--date-font="Hack Nerd Font"   \
+--date-size="28"               \
+--verif-font="Hack Nerd Font"  \
+--verif-size="30"              \
+--wrong-font="Hack Nerd Font"  \
+--wrong-size="30"              \
