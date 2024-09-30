@@ -4,13 +4,13 @@ My dotfiles for the debian laptop I daily use.
 It's a work in progress as I learn more and more about Linux systems.
 
 ## Software I used
-- Window manager: *i3*
-- Bar: *i3blocks*
-- Menu: *rofi*
-- Terminal: *kitty*
-- Composer: *picom*
-- Background: *feh*
-- Theme: *gruvbox*
+- Window manager: **i3**
+- Bar: **i3blocks**
+- Menu: **rofi**
+- Terminal: **kitty**
+- Composer: **picom**
+- Background: **feh**
+- Theme: **gruvbox**
 
 ## What is in this directory
 - i3: main config file for `i3`
