@@ -17,6 +17,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 case $BLOCK_BUTTON in
-  1) i3-msg 'workspace number 20; exec ~/MyScripts/firefox_homelab.sh; echo  '
+  1) i3-msg 'workspace 20: ; exec ~/MyScripts/firefox_homelab.sh; echo  '
 esac
 
