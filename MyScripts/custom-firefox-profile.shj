@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+firefox --no-remote -P YOURPROFILE --class YOURPROFILE 'https://STARTPAGE'

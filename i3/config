@@ -24,7 +24,7 @@ set $external_display HDMI-1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Hack Nerd Font 11
+font pango:Hack Nerd Font Mono 11
 
 # Colors from .Xresources
 # note that colors in i3block are loaded from .profile instead
@@ -58,17 +58,17 @@ exec --no-startup-id dex --autostart --environment i3
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-#exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id xss-lock -- /home/lux/.config/i3blocks/scripts/mylock
 
-# Lock screen after 30 seconds of inactivity (ADDED BY ME)
+
+# Lock screen after 30 seconds of inactivity
 exec_always --no-startup-id xset dpms 0 0 30
 # shortcut to trigger screen lock
 bindsym $mod+l exec ~/.config/i3blocks/scripts/mylock
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
+# exec --no-startup-id nm-applet
 
 set $onlineCheck nm-online --quiet --timeout=300
 
@@ -95,11 +95,14 @@ gaps outer 10px
 smart_gaps on
 # Startup apps (ADDED BY ME)
 exec $onlineCheck && thunderbird
-exec $onlineCheck && firefox
+exec i3-msg 'workspace $ws12; exec $onlineCheck && firefox'
 exec i3-msg 'workspace $ws11; exec $TERMINAL; split v;'
-exec ~/AppImages/Obsidian-1.6.7.AppImage
-exec /opt/zotero/zotero
-exec $onlineCheck && ~/MyScripts/firefox_whatsapp.sh
+
+# set layout of workspaces
+# only the second worked, only for $ws9, changed using a for_window statement (see below)
+# exec_always /home/lux/MyScripts/per-workspace-layout.pl
+# exec_always --no-startup-id i3-msg 'workspace number 9; layout tabbed'
+# exec_always --no-startup-id i3-msg 'workspace number 2; layout tabbed; workspace number 9; layout tabbed'
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -117,7 +120,7 @@ bindsym $mod+Shift+q kill
 # start dmenu (a program launcher)
 # bindsym $mod+d exec --no-startup-id dmenu_run
 # A more modern dmenu replacement is rofi:
-bindcode $mod+40 exec "rofi -modi drun,run -show drun"
+bindcode $mod+40 exec "rofi -modi drun,run -show drun -disable-history -no-levenshtein-sort"
 # There also is i3-dmenu-desktop which only displays applications shipping a
 # .desktop file. It is a wrapper around dmenu, so you need that installed.
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
@@ -174,53 +177,41 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-# firefox
-set $ws1 "1: "
-# zotero
-set $ws2 "2: "
+set $ws1 "1"
+set $ws2 "2"
 set $ws3 "3"
 set $ws4 "4"
 set $ws5 "5"
 set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
-# mail
 set $ws9 "9: "
-# password manager
 set $ws10 "10: "
 
-# console
-set $ws11 "11: "
-# obsidian
-set $ws12 "12: "
-# vscode
-set $ws13 "13: "
-# zotero reader
+set $ws11 "11"
+set $ws12 "12"
+set $ws13 "13"
 set $ws14 "14: "
 set $ws15 "15"
 set $ws16 "16"
 set $ws17 "17"
 set $ws18 "18"
 set $ws19 "19"
-# homelab session
 set $ws20 "20: "
 
-# assign specific workspace to specific application (ME)
-assign [class="Firefox-esr"] $ws1
-assign [class="Zotero"] $ws2
+# reserved workspace 9 for comms
 assign [class="WhatsApp"] $ws9
-assign [class="KeePassXC"] $ws10
+# assign [class="Discord"] $ws9
 for_window [class="thunderbird-default"] move to workspace $ws9, layout tabbed
-
-assign [class="obsidian"] $ws12
-assign [class="Code"] $ws13
+# reserved workspace 10 for pass man
+assign [class="KeePassXC"] $ws10
 
 # enable floating for Zotero Quick Format Citation window
 for_window [title="Quick Format Citation"] floating enable
 # move Zotero reader to $ws14
-for_window [window_role="reader"] move to workspace $ws14, layout tabbed
+for_window [window_role="reader"] move to workspace $ws14
 # get tabbed layout for firefox
-for_window [class="Firefox-esr"] layout tabbed
+for_window [class="firefox-esr"] layout tabbed
 
 # assign specific workspaces to specific screens (ME)
 workspace $ws1 output $laptop_display
@@ -291,8 +282,10 @@ bindsym $mod+$mod4+0 move container to workspace number $ws20
 
 # navigate through workspaces on LVDS-1
 bindsym $mod+$mod3+Tab focus output $laptop_display, workspace next_on_output
+bindsym $mod+$mod3+Caps_Lock focus output $laptop_display, workspace prev_on_output
 # navigate through workspaces on HDMI-1
 bindsym $mod+Tab focus output $external_display, workspace next_on_output
+bindsym $mod+Caps_Lock focus output $external_display, workspace prev_on_output
 
 # move focused workspace between monitors
 bindsym $mod+$mod4+greater move workspace to output right
@@ -327,24 +320,30 @@ mode "resize" {
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
         bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
+        # bindsym $mod+r mode "default"
 }
 
-bindsym $mod+r mode "resize"
+# bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
         status_command SCRIPT_DIR=~/.config/i3blocks/scripts i3blocks
 	# make bar transparent
-	i3bar_command i3bar --transparency
+	#i3bar_command i3bar --transparency
+	# colors of the bar should be transparent too, use hexadecimal code
+	# example #HHHHHHCC, where HHHHHH is a color, and CC is a trasparency
 	# set space as separator of bar
         separator_symbol "<200b>"
+        # display tray on the HDMI screen
+	tray_output $external_display
 	# remove number of workspace that has name
 	strip_workspace_numbers yes
 	workspace_min_width 30
+	font pango:Hack Nerd Font 11
         colors {
 		background $bar_bk
+		#separator  $bar_bk
 		#<color class>    <border> <backg> <text>
 		focused_workspace  $foc_tx $foc_bk $foc_tx
 		active_workspace   $foc_bk $foc_tx $foc_bk
@@ -356,5 +355,9 @@ bar {
 # To display NUM and CAPS locks, see .config/i3blocks/config
 bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
 bindsym --release Num_Lock exec pkill -SIGRTMIN+12 i3blocks
-
+#bindsym $mod+space exec ~/.config/i3blocks/scripts/mykeyboardlayout
 bindsym $mod+space exec pkill -SIGRTMIN+14 i3blocks
+
+bindsym $mod+p exec MyScripts/coding.sh
+bindsym $mod+r exec MyScripts/reading.sh
+bindsym $mod+c exec rofi -show calc -modi calc -no-show-match -no-sort -theme-str '@import ".config/rofi/calc.rasi"'

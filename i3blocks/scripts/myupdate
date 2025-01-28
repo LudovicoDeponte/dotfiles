@@ -23,5 +23,5 @@ if [[ $UPGRADABLE -ge 1 ]]; then
 fi
 
 case $BLOCK_BUTTON in
-  1) setsid -f $TERMINAL sudo apt-get update && apt-get upgrade && sudo apt-get dist-upgrade && pkill -SIGRTMIN+13 i3blocks
+  1) setsid -f $TERMINAL sudo apt-get update; sudo apt-get upgrade -y; sudo apt-get dist-upgrade -y; exec pkill -SIGRTMIN+13 i3blocks
 esac

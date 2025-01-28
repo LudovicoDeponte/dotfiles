@@ -1,1 +1,12 @@
 @theme "/usr/share/rofi/themes/gruvbox-dark-hard.rasi"
+
+element {
+  orientation: horizontal;
+  children: [ element-icon, element-text ];
+  spacing: 20px;
+}
+
+element-icon {
+    size: 1.5em;
+}
+

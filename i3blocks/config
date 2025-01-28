@@ -1,14 +1,41 @@
-# GLOBAL PROPERTIES
+# i3blocks config file
+#
+# Please see man i3blocks for a complete reference!
+# The man page is also hosted at http://vivien.github.io/i3blocks
+#
+# List of valid properties:
+#
+# align
+# color
+# command
+# full_text
+# instance
+# interval
+# label
+# min_width
+# name
+# separator
+# separator_block_width
+# short_text
+# signal
+# urgent
+
+# Global properties
 #
 # The top properties below are applied to every block, but can be overridden.
 # Each block command defaults to the script name to avoid boilerplate.
+# Change $SCRIPT_DIR to the location of your scripts!
 command=$SCRIPT_DIR/$BLOCK_NAME
 separator_block_width=15
 markup=pango
+#font xft:Hack Nerd Font, FontAwesome 10
 
-# Layout and key indicators
+# Key indicators
 #
+# Add the following bindings to i3 config file:
 #
+# bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
+# bindsym --release Num_Lock  exec pkill -SIGRTMIN+12 i3blocks
 [mykeyboardlayout]
 signal=14
 interval=never
@@ -32,14 +59,14 @@ separator=false
 
 # Other indicators
 #
-# 'myupdate' appears if there are packages to be updated.
-# 'myhomeserver' is a button shortcut to open an interface for the homeserver.
+#
+
 [myupdate]
 signal=13
 interval=once
 separator=false
 
-[myhomeserver]
+[myhomelab]
 full_text=<span> </span>
 interval=never
 separator=false
@@ -56,12 +83,6 @@ signal=10
 interval=once
 separator=false
 
-
-# HARDWARE STATS INDICATORS
-
-# Temperature of CPU
-#
-# Displays temperature of CPU as recorded by 'acpi' command
 [mytemp]
 interval=30
 separator=false
@@ -114,16 +135,13 @@ separator=false
 
 # Date Time
 #
-#
 [time]
 command=date '+%d/%m/%y %H:%M'
 interval=10
 separator=false
 
-# Shutdown menu
-#
-# Simple button shortcut for the rofi-shutdown menu
 [shutdown_menu]
+command=/home/lux/.config/rofi/scripts/power.sh
 full_text=<span size="medium">   </span>
 interval=never
 separator=false
